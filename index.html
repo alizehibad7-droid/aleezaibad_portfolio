@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aleeza Ibad — Flutter & WordPress Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+  :root,[data-theme="dark"]{
+    --bg:#11111E; --bg2:#041216; --card:#171220; --card2:#1f1b2c;
+    --border:rgba(90,200,180,0.18); --borderS:rgba(255,255,255,0.10);
+    --text:#f2f5f8; --muted:#a9b7c7; --dim:#7a8796;
+    --teal:#5ac8b4; --tealG:rgba(90,200,180,0.16); --tealD:rgba(90,200,180,0.10);
+    --blue:#8eb4d4; --blueG:rgba(142,180,212,0.14);
+    --fh:'Space Grotesk',sans-serif; --fb:'Plus Jakarta Sans',sans-serif;
+    --fm:'IBM Plex Mono','Space Grotesk',monospace;
+    --nav:68px; --r:12px; --tr:0.28s cubic-bezier(0.22,1,0.36,1);
+    --cursor:#e8eef4;
+    --nav-bg:rgba(17,17,30,0.82); --nav-bg-sc:rgba(17,17,30,0.94);
+    --mob-bg:rgba(17,17,30,0.97);
+    --modal-bg:#1a1626; --modal-back:rgba(0,0,0,0.72);
+    --ring:rgba(90,200,180,0.65);
+    --shadow:rgba(0,0,0,0.35);
+    --cert-grad:linear-gradient(160deg,#1f1b2c 0%,#041216 100%);
+  }
+  [data-theme="light"]{
+    --bg:#f7f6f3; --bg2:#efeee9; --card:#ffffff; --card2:#f3f2ee;
+    --border:rgba(28,27,25,0.10); --borderS:rgba(28,27,25,0.06);
+    --text:#1c1b19; --muted:#6b6560; --dim:#9a948c;
+    --teal:#2f5d50; --tealG:rgba(47,93,80,0.10); --tealD:rgba(47,93,80,0.06);
+    --blue:#3d5a80; --blueG:rgba(61,90,128,0.08);
+    --cursor:#1c1b19;
+    --nav-bg:rgba(247,246,243,0.88); --nav-bg-sc:rgba(255,255,255,0.94);
+    --mob-bg:rgba(255,255,255,0.97);
+    --modal-bg:#fff; --modal-back:rgba(28,27,25,0.45);
+    --ring:rgba(28,27,25,0.35);
+    --shadow:rgba(28,27,25,0.06);
+    --cert-grad:linear-gradient(160deg,#f8f7f4 0%,#ebe8e2 100%);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;cursor:none!important}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.75;overflow-x:hidden;cursor:none!important}
+  ::selection{background:rgba(90,200,180,0.22);color:var(--text)}
+  a{color:inherit;text-decoration:none}
+  /* graph-paper grid */
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(90,200,180,0.055) 1px,transparent 1px),linear-gradient(90deg,rgba(90,200,180,0.055) 1px,transparent 1px);background-size:48px 48px;opacity:0.32}
+  [data-theme="light"] body::before{background-image:linear-gradient(rgba(28,27,25,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(28,27,25,0.05) 1px,transparent 1px);opacity:0.28}
+  .g1{display:block;position:fixed;width:85vmax;height:85vmax;top:-25%;right:-20%;border-radius:50%;background:radial-gradient(circle,rgba(40,110,100,0.28) 0%,rgba(40,110,100,0) 68%);filter:blur(40px);opacity:0.95;pointer-events:none;z-index:0;animation:glowDrift 18s ease-in-out infinite}
+  .g2{display:none}
+  @keyframes glowDrift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-16%,14%) scale(1.1)}66%{transform:translate(-10%,-12%) scale(0.96)}}
+  @media (prefers-reduced-motion:reduce){.g1,.hname{animation:none!important}}
+  .cursor-dot,.cursor-ring,.cursor-spin{position:fixed;top:0;left:0;pointer-events:none!important;z-index:2147483000;cursor:none!important;will-change:transform;opacity:1;visibility:visible}
+  .cursor-dot{width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,0.45),0 0 14px rgba(90,200,180,0.45);transform:translate(-50%,-50%)}
+  .cursor-ring{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--teal);background:rgba(90,200,180,0.06);transform:translate(-50%,-50%);transition:width .2s ease,height .2s ease,border-color .2s ease,background .2s ease}
+  .cursor-ring.on-link{width:52px;height:52px;border-color:#fff;background:rgba(90,200,180,0.12)}
+  .cursor-spin{color:var(--teal);opacity:0.85;font-size:14px;line-height:1;text-shadow:0 0 8px rgba(90,200,180,0.5)}
+  @media (hover:none) and (pointer:coarse){
+    *,*::before,*::after{cursor:auto!important}
+    .cursor-dot,.cursor-ring,.cursor-spin{display:none!important}
+  }
+  #nav{position:fixed;top:0;left:0;right:0;height:var(--nav);display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--borderS);z-index:1000;transition:all var(--tr)}
+  #nav.sc{background:var(--nav-bg-sc);border-bottom-color:var(--border)}
+  .nav-right{display:flex;align-items:center;gap:0.75rem}
+  .logo{font-family:var(--fh);font-size:1.15rem;font-weight:600;color:var(--text);letter-spacing:-0.02em}
+  .logo span{color:var(--muted)}
+  .nlinks{display:flex;gap:1.75rem;list-style:none;align-items:center}
+  .nlinks a{font-size:0.875rem;font-weight:500;color:var(--muted);letter-spacing:0.01em;transition:color var(--tr)}
+  .nlinks a:hover{color:var(--text)}
+  .nlinks .nbtn{padding:0!important;border:none!important;background:transparent!important;border-radius:0!important;color:var(--muted)!important;font-weight:500!important}
+  .nlinks .nbtn:hover{color:var(--text)!important;background:transparent!important}
+  .theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:none;border:none;color:var(--muted);transition:color var(--tr),transform var(--tr)}
+  .theme-toggle:hover{color:var(--text);transform:rotate(12deg)}
+  .theme-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  [data-theme="dark"] .theme-toggle .icon-moon{display:none}
+  [data-theme="light"] .theme-toggle .icon-sun{display:none}
+  .ham{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:5px}
+  .ham span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 0.3s}
+  .ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+  .ham.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+  .ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+  .mobnav{display:none;position:fixed;top:var(--nav);left:0;right:0;background:var(--mob-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:1.5rem 6%;flex-direction:column;z-index:999}
+  .mobnav.open{display:flex}
+  .mobnav a{padding:1rem 0;border-bottom:1px solid var(--borderS);font-size:1rem;font-weight:500;color:var(--muted);transition:color var(--tr)}
+  .mobnav a:last-child{border-bottom:none}
+  .mobnav a:hover{color:var(--text)}
+  section{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:120px 5%}
+  .tag{display:inline-flex;align-items:center;gap:8px;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem}
+  .tag::before{content:'';width:22px;height:1.5px;background:var(--teal);border-radius:2px}
+  h2.ttl{font-family:var(--fh);font-size:clamp(2rem,3.8vw,2.75rem);font-weight:700;line-height:1.15;letter-spacing:-0.02em;margin-bottom:3rem;color:var(--text)}
+  h2.ttl span{color:var(--teal)}
+  #hero{position:relative;min-height:100vh;display:flex;align-items:center;padding-top:calc(var(--nav) + 60px);padding-bottom:80px}
+  .hero-watermark{position:absolute;right:-2%;top:8%;font-family:var(--fm);font-size:clamp(10rem,28vw,22rem);font-weight:700;letter-spacing:-0.06em;line-height:0.8;color:var(--text);opacity:0.035;pointer-events:none;user-select:none;z-index:0}
+  .hwrap{position:relative;z-index:1;display:grid;grid-template-columns:1fr 380px;gap:4.5rem;align-items:center;width:100%}
+  .spill{display:inline-flex;align-items:center;gap:9px;padding:0;border:none;background:none;font-size:0.8rem;font-weight:600;color:var(--teal);margin-bottom:1.6rem;letter-spacing:0.08em;text-transform:uppercase}
+  .sdot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:bk 2.4s ease-in-out infinite}
+  @keyframes bk{0%,100%{opacity:1}50%{opacity:0.35}}
+  .hname{font-family:var(--fm);font-size:clamp(2.6rem,6vw,4.6rem);font-weight:700;text-transform:uppercase;letter-spacing:0.12em;line-height:1.05;margin-bottom:0.5rem;animation:glitchShift 2.8s steps(2,end) infinite}
+  @keyframes glitchShift{0%,38%,48%,78%,100%{transform:translate(0,0);text-shadow:none}40%{transform:translate(1px,0);text-shadow:-1px 0 rgba(90,200,180,0.45)}42%{transform:translate(-2px,1px);text-shadow:2px 0 rgba(90,200,180,0.5),-1px 0 rgba(122,162,199,0.35)}44%{transform:translate(2px,-1px);text-shadow:-2px 0 rgba(122,162,199,0.45)}46%{transform:translate(0,0);text-shadow:none}80%{transform:translate(-2px,0);text-shadow:2px 0 rgba(90,200,180,0.55)}83%{transform:translate(2px,1px);text-shadow:-2px 0 rgba(122,162,199,0.45),1px 0 rgba(90,200,180,0.35)}86%{transform:translate(-1px,0);text-shadow:1px 0 rgba(90,200,180,0.4)}88%{transform:translate(0,0);text-shadow:none}}
+  .hrole{font-family:var(--fh);font-size:clamp(1.2rem,2.4vw,1.75rem);font-weight:500;color:var(--teal);letter-spacing:-0.01em;margin-bottom:1.6rem}
+  .hdesc{font-size:1.05rem;color:var(--muted);max-width:510px;line-height:1.85;margin-bottom:2.4rem}
+  .hdesc strong,.atxt p strong,.atxt p span{color:var(--text);font-weight:700}
+  .hctas{display:flex;gap:1.75rem;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:0;border-radius:0;background:none!important;border:none!important;box-shadow:none!important;font-size:0.95rem;font-weight:600;color:var(--text);font-family:var(--fb);transition:color var(--tr)}
+  .btn .arr{display:inline-block;transition:transform var(--tr)}
+  .btn:hover{color:var(--teal)}
+  .btn:hover .arr{transform:translateX(5px)}
+  .btT,.btG{background:none!important;border:none!important;color:var(--text)}
+  .btG{color:var(--muted)}
+  .hsoc{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap}
+  .sic{display:flex;align-items:center;gap:7px;padding:8px 0;border:none;font-size:0.82rem;font-weight:500;color:var(--muted);transition:color var(--tr);background:none}
+  .sic svg{width:15px;height:15px;fill:currentColor}
+  .sic:hover{color:var(--text)}
+  .hcard{background:var(--card);border:1px solid var(--borderS);border-radius:16px;padding:2.25rem;display:flex;flex-direction:column;position:relative;overflow:hidden}
+  .hcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(90,200,180,0.35),transparent)}
+  .srow{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 0;border-bottom:1px solid var(--borderS)}
+  .srow:last-child{border-bottom:none;padding-bottom:0}
+  .srow:first-child{padding-top:0}
+  .slb{font-size:0.82rem;color:var(--muted);font-weight:500}
+  .ssb{font-size:0.72rem;color:var(--dim);margin-top:2px}
+  .sv{font-family:var(--fh);font-size:2.2rem;font-weight:700;color:var(--teal);line-height:1}
+  #about{padding-top:80px}
+  .agrid{display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:start}
+  .atxt p{color:var(--muted);line-height:1.9;margin-bottom:1.1rem}
+  .acards{display:flex;flex-direction:column;gap:0.75rem}
+  .swrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.2rem}
+  .sbox{background:linear-gradient(165deg,rgba(255,255,255,0.04) 0%,rgba(255,255,255,0.015) 100%),var(--card);border:1px solid rgba(90,200,180,0.16);border-radius:var(--r);padding:1.5rem;transition:all var(--tr);box-shadow:0 10px 28px rgba(0,0,0,0.22)}
+  .sbox:hover{border-color:rgba(90,200,180,0.32);transform:translateY(-2px);box-shadow:0 14px 34px rgba(0,0,0,0.28)}
+  .sbh{display:flex;align-items:center;gap:8px;font-size:0.74rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:1.05rem}
+  .sbh img{width:18px;height:18px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(90,200,180,0.25))}
+  .chips{display:flex;flex-wrap:wrap;gap:0.55rem}
+  .chip{padding:7px 14px;border-radius:8px;border:1px solid rgba(90,200,180,0.20);background:rgba(255,255,255,0.06);font-size:0.82rem;font-weight:600;color:var(--text);letter-spacing:0.01em;transition:all var(--tr)}
+  .chip:hover{border-color:rgba(90,200,180,0.45);color:#9eebdb;background:rgba(90,200,180,0.14)}
+  .ac{display:flex;align-items:center;gap:1rem;padding:1rem 1.15rem;background:linear-gradient(165deg,rgba(255,255,255,0.04) 0%,rgba(255,255,255,0.015) 100%),var(--card);border:1px solid rgba(90,200,180,0.14);border-radius:12px;transition:all var(--tr)}
+  .ac:hover{border-color:rgba(90,200,180,0.28);background:var(--card2)}
+  .aci{width:40px;height:40px;border-radius:10px;background:rgba(90,200,180,0.12);border:1px solid rgba(90,200,180,0.22);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:8px}
+  .aci img,.cico img{display:block;width:100%;height:100%;object-fit:contain}
+  .acl{font-size:0.72rem;color:var(--dim);font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
+  .acv{font-size:0.9rem;font-weight:500;color:var(--text);margin-top:2px}
+  .pfilters{display:flex;flex-wrap:wrap;gap:0.55rem;margin:-1.5rem 0 2.25rem}
+  .pfilter{padding:8px 0;margin-right:1.25rem;border:none;border-bottom:1px solid transparent;background:none;font-family:var(--fb);font-size:0.82rem;font-weight:600;color:var(--muted);transition:all var(--tr);border-radius:0}
+  .pfilter:hover{color:var(--text)}
+  .pfilter.on{color:var(--text);border-bottom-color:var(--teal)}
+  .pwrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem}
+  .pc{background:var(--card);border:1px solid var(--borderS);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:all var(--tr)}
+  .pc.is-hidden{display:none!important}
+  .pc:hover{border-color:var(--border);transform:translateY(-4px);box-shadow:0 18px 40px var(--shadow)}
+  .pc[data-project]{text-align:left;font:inherit;color:inherit;width:100%}
+  .pc[data-project]:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+  .pimg{aspect-ratio:16/10;overflow:hidden;position:relative;background:var(--bg2);flex-shrink:0}
+  .pimg > .pcover{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease}
+  .pc:hover .pimg > .pcover{transform:scale(1.03)}
+  .pbody-compact .pdesc,.pbody-compact .ptags,.pbody-compact .plinks{display:none}
+  .pbody{padding:1.5rem;flex:1;display:flex;flex-direction:column;gap:0.55rem}
+  .pmeta{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+  .porg{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal)}
+  .pdot{color:var(--dim);font-size:0.6rem}
+  .pyr{font-size:0.7rem;color:var(--muted)}
+  .pbdg{padding:2px 10px;border-radius:4px;background:var(--tealD);border:1px solid var(--border);font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal)}
+  .pname{font-family:var(--fh);font-size:1.1rem;font-weight:700;line-height:1.3;color:var(--text)}
+  .pdesc{font-size:0.86rem;color:var(--muted);line-height:1.75;flex:1}
+  .ptags{display:flex;flex-wrap:wrap;gap:0.4rem}
+  .ptag{padding:3px 10px;border-radius:6px;background:var(--blueG);border:1px solid rgba(122,162,199,0.18);font-size:0.68rem;font-weight:600;letter-spacing:0.04em;color:var(--blue)}
+  .plinks{display:flex;gap:0.6rem;margin-top:auto;padding-top:0.4rem}
+  .plnk{display:inline-flex;align-items:center;gap:5px;padding:7px 0;border:none;font-size:0.78rem;font-weight:600;color:var(--muted);transition:color var(--tr)}
+  .plnk:hover{color:var(--teal)}
+  body.modal-open{overflow:hidden}
+  .pmod{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:1.25rem;opacity:0;visibility:hidden;transition:opacity 0.3s ease,visibility 0.3s ease}
+  .pmod.open{opacity:1;visibility:visible}
+  .pmod-backdrop{position:absolute;inset:0;background:var(--modal-back);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  .pmod-panel{position:relative;z-index:1;width:100%;max-width:920px;max-height:92vh;background:var(--modal-bg);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transform:scale(0.96);transition:transform 0.3s ease;box-shadow:0 24px 60px rgba(0,0,0,0.4)}
+  .pmod.open .pmod-panel{transform:scale(1)}
+  .pmod-close{position:absolute;top:14px;right:14px;z-index:5;width:36px;height:36px;border-radius:50%;border:1px solid var(--borderS);background:var(--card);color:var(--text);font-size:1.25rem;line-height:1;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+  .pmod-close:hover{border-color:var(--teal);color:var(--teal);background:var(--tealD)}
+  .pmod-scroll{overflow-y:auto;flex:1}
+  .pmod-head{padding:1.6rem 3.5rem 1rem 1.6rem;border-bottom:1px solid var(--borderS)}
+  .pmod-head .pname{margin-bottom:0.5rem;font-size:1.25rem}
+  .pmod-head .ptags{margin-top:0.75rem}
+  .pmod-gallery{padding:1.2rem 1.6rem 0}
+  .pmod-main{aspect-ratio:16/10;border-radius:10px;overflow:hidden;background:var(--bg2);margin-bottom:0.9rem;border:1px solid var(--borderS)}
+  .pmod-main img{width:100%;height:100%;object-fit:contain;display:block}
+  .pmod-thumbs{display:flex;gap:0.5rem;overflow-x:auto;padding-bottom:0.4rem;scrollbar-width:thin;scrollbar-color:var(--teal) var(--card2)}
+  .pmod-thumb{flex:0 0 88px;height:56px;border-radius:8px;overflow:hidden;border:2px solid transparent;background:var(--card2);padding:0;transition:border-color var(--tr)}
+  .pmod-thumb.on{border-color:var(--teal)}
+  .pmod-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .pmod-body{padding:1.2rem 1.6rem 1.6rem}
+  .pmod-body .pdesc{margin-bottom:1rem}
+  .pmod-body .plinks{margin-top:0.5rem}
+  .tline{position:relative;padding-left:2.8rem}
+  .tline::before{content:'';position:absolute;left:9px;top:12px;bottom:12px;width:1px;background:linear-gradient(to bottom,var(--teal),rgba(122,162,199,0.35),transparent)}
+  .ti{position:relative;margin-bottom:2.2rem}
+  .ti:last-child{margin-bottom:0}
+  .tdot{position:absolute;left:-2.8rem;top:8px;width:16px;height:16px;border-radius:50%;background:var(--teal);border:3px solid var(--bg);box-shadow:0 0 0 3px var(--tealD)}
+  .tcard{background:var(--card);border:1px solid var(--borderS);border-radius:var(--r);padding:1.8rem;transition:border-color var(--tr)}
+  .tcard:hover{border-color:var(--border)}
+  .thead{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;margin-bottom:0.3rem}
+  .trole{font-family:var(--fh);font-size:1.1rem;font-weight:700}
+  .tbdg{padding:4px 14px;border-radius:100px;background:var(--tealD);border:1px solid var(--border);font-size:0.71rem;font-weight:600;color:var(--teal);white-space:nowrap;letter-spacing:0.04em}
+  .tco{font-size:0.9rem;color:var(--blue);font-weight:600;margin-bottom:1rem}
+  .tpts{list-style:none;display:flex;flex-direction:column;gap:0.5rem}
+  .tpts li{font-size:0.88rem;color:var(--muted);padding-left:1.3rem;position:relative;line-height:1.6}
+  .tpts li::before{content:'\25B8';position:absolute;left:0;color:var(--teal);font-size:0.8rem;top:1px}
+  .egrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
+  .ecard{background:var(--card);border:1px solid var(--borderS);border-radius:var(--r);padding:2rem;position:relative;overflow:hidden;transition:all var(--tr)}
+  .ecard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform 0.35s ease}
+  .ecard:hover{border-color:var(--border);transform:translateY(-3px)}
+  .ecard:hover::after{transform:scaleX(1)}
+  .eyr{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:0.8rem}
+  .edeg{font-family:var(--fh);font-size:1.05rem;font-weight:700;margin-bottom:0.4rem;line-height:1.3}
+  .einst{font-size:0.85rem;color:var(--muted);margin-bottom:0.8rem}
+  .egrd{display:inline-block;padding:4px 14px;border-radius:6px;background:var(--tealD);border:1px solid var(--border);font-size:0.75rem;font-weight:700;color:var(--teal);letter-spacing:0.04em}
+  .cgrid{display:grid;grid-template-columns:1fr;gap:1.2rem}
+  .ccert-row{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--borderS);border-radius:var(--r);overflow:hidden;transition:all var(--tr)}
+  .ccert-row:hover{border-color:var(--border);box-shadow:0 14px 36px var(--shadow)}
+  .ccert-preview{display:flex;align-items:center;justify-content:center;width:100%;background:var(--cert-grad);padding:1rem 1.25rem;text-decoration:none}
+  .ccert-preview img{width:auto;max-width:100%;height:auto;max-height:220px;object-fit:contain;display:block;border-radius:8px;box-shadow:0 10px 28px var(--shadow);background:#fff}
+  .ccert-meta{padding:1.5rem 1.75rem 1.75rem}
+  .ccert-label{font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:0.65rem}
+  .cnm{font-family:var(--fh);font-size:0.95rem;font-weight:700;margin-bottom:0.2rem;color:var(--text)}
+  .ccert-meta .cnm{font-size:clamp(1.1rem,2vw,1.35rem);margin-bottom:0.4rem;line-height:1.35}
+  .cby{font-size:0.8rem;color:var(--muted);margin-bottom:0.3rem}
+  .cdt{font-size:0.75rem;font-weight:600;color:var(--teal)}
+  .ccert-hint{display:inline-block;margin-top:0.9rem;font-size:0.75rem;font-weight:600;color:var(--muted)}
+  .ccert-row:hover .ccert-hint{color:var(--teal)}
+  #contact{text-align:center}
+  .cbox{background:var(--card);border:1px solid var(--borderS);border-radius:20px;padding:5rem 3rem;position:relative;overflow:hidden;max-width:780px;margin:0 auto}
+  .cbox::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(90,200,180,0.35) 50%,transparent)}
+  .cbox h2{margin-bottom:0.7rem}
+  .cbox>p{font-size:1rem;color:var(--muted);max-width:460px;margin:0 auto 2.5rem}
+  .clnks{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+  .cl{display:inline-flex;align-items:center;gap:8px;padding:12px 0;border:none;background:none!important;box-shadow:none!important;font-size:0.9rem;font-weight:600;color:var(--muted);transition:color var(--tr)}
+  .cl svg{width:16px;height:16px;fill:currentColor}
+  .cl:hover{color:var(--text)}
+  .cl.pr{color:var(--text)}
+  .cl.pr:hover{color:var(--teal)}
+  footer{position:relative;z-index:1;text-align:center;padding:2.5rem 5%;border-top:1px solid var(--borderS);color:var(--dim);font-size:0.82rem}
+  footer strong{color:var(--teal);font-weight:600}
+  .rv{opacity:0;transform:translateY(22px);transition:opacity 0.65s ease,transform 0.65s ease}
+  .rv.d1{transition-delay:0.1s}.rv.d2{transition-delay:0.2s}.rv.d3{transition-delay:0.3s}
+  .rv.on{opacity:1;transform:none}
+  @media(max-width:900px){
+    .hwrap{grid-template-columns:1fr}.hcard{display:none}.agrid{grid-template-columns:1fr}.pwrap{grid-template-columns:1fr}
+    .nlinks{display:none}.ham{display:flex}.pmod{padding:0}.pmod-panel{max-height:100vh;border-radius:0;max-width:100%}
+    .hero-watermark{opacity:0.025;right:-8%;font-size:clamp(8rem,40vw,14rem)}
+  }
+  @media(max-width:520px){
+    section{padding:80px 5%}.hctas{flex-direction:column;align-items:flex-start}
+    .ccert-preview{padding:0.75rem}.ccert-preview img{max-height:160px}.ccert-meta{padding:1.25rem 1.15rem 1.4rem}
+  }
+  </style>
+</head>
+<body>
+
+<div class="g1"></div>
+<div class="g2"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">aleezaibad<span>.dev</span></div>
+  <div class="nav-right">
+    <ul class="nlinks">
+      <li><a onclick="goTo('about')">About</a></li>
+      <li><a onclick="goTo('skills')">Skills</a></li>
+      <li><a onclick="goTo('projects')">Projects</a></li>
+      <li><a onclick="goTo('experience')">Experience</a></li>
+      <li><a onclick="goTo('education')">Education</a></li>
+      <li><a onclick="goTo('certifications')">Certs</a></li>
+      <li><a onclick="goTo('contact')" class="nbtn">Contact</a></li>
+    </ul>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 0110.5 4 7 7 0 1019 15.5c.7-.3 1.4-.6 2-1z"/></svg>
+    </button>
+    <button class="ham" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobnav" id="mn">
+  <a onclick="mGoTo('about')">About</a>
+  <a onclick="mGoTo('skills')">Skills</a>
+  <a onclick="mGoTo('projects')">Projects</a>
+  <a onclick="mGoTo('experience')">Experience</a>
+  <a onclick="mGoTo('education')">Education</a>
+  <a onclick="mGoTo('certifications')">Certifications</a>
+  <a onclick="mGoTo('contact')">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-watermark" aria-hidden="true">AI</div>
+  <div class="hwrap">
+    <div>
+      <div class="spill"><span class="sdot"></span>Open to Opportunities</div>
+      <h1 class="hname">Aleeza<br>Ibad</h1>
+      <p class="hrole">Flutter &amp; WordPress Developer</p>
+      <p class="hdesc"><strong>Flutter developer</strong> building production mobile apps with Firebase &amp; AI, plus WordPress sites shipped for real clients. Creator of <strong>RateBridge</strong> — a construction industry app for Usman Associates. BS IT, University of Punjab · <strong>CGPA 3.64/4.0</strong>.</p>
+      <div class="hctas">
+        <a class="btn btT" onclick="goTo('projects')">View Projects <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn btG" onclick="goTo('contact')">Get In Touch <span class="arr" aria-hidden="true">→</span></a>
+      </div>
+      <div class="hsoc">
+        <a class="sic" href="https://github.com/alizehibad7-droid" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a class="sic" href="https://www.linkedin.com/in/aleeza-ibad-869849327" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a class="sic" href="mailto:aleezaibad7@gmail.com">
+          <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.907 1.528-1.148C21.69 2.28 24 3.434 24 5.457z"/></svg>
+          Email
+        </a>
+      </div>
+    </div>
+    <div class="hcard rv d2">
+      <div class="srow"><div><div class="slb">Academic CGPA</div><div class="ssb">University of Punjab</div></div><div class="sv">3.64</div></div>
+      <div class="srow"><div><div class="slb">Flutter Projects</div><div class="ssb">Mobile Apps Built</div></div><div class="sv">7+</div></div>
+      <div class="srow"><div><div class="slb">WordPress Sites</div><div class="ssb">Deployed for Real Clients</div></div><div class="sv">5+</div></div>
+      <div class="srow"><div><div class="slb">Internship</div><div class="ssb">NEXCRAFTSTUDIO · 2025</div></div><div class="sv">3.5<span style="font-size:1rem;color:var(--muted)">mo</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="padding-top:80px">
+  <div class="tag">About Me</div>
+  <h2 class="ttl rv">Who <span>I Am</span></h2>
+  <div class="agrid">
+    <div class="atxt rv">
+      <p>I'm <span>Aleeza Ibad</span>, a Flutter &amp; WordPress developer focused on shipping clean, production-ready mobile apps and websites that solve real business problems.</p>
+      <p>What draws me to mobile development is the craft of turning complex workflows into interfaces people can use without friction — and watching an idea become something that lives on a client's phone every day.</p>
+      <p>I build with <strong>Flutter &amp; Dart</strong>, Firebase, and AI integrations — delivering 6+ apps from AI chat to fitness planning through the Bano Qabil program. As a certified <strong>WordPress developer</strong>, I deployed multiple client sites during my Frontend Intern role at NEXCRAFTSTUDIO in 2025.</p>
+      <p><span>RateBridge</span> is a production Flutter app I built for <strong>Usman Associates</strong>, a construction business in Rawalpindi — with multi-role access, Firebase, Google Gemini AI, and MVVM/Provider architecture. I hold a BS in Information Technology from the University of Punjab with a <strong>CGPA of 3.64/4.0</strong>.</p>
+    </div>
+    <div class="acards rv d1">
+      <div class="ac"><div class="aci"><img src="logos/location.svg" alt="" width="22" height="22" loading="lazy"/></div><div><div class="acl">Location</div><div class="acv">Rawalpindi, Pakistan</div></div></div>
+      <div class="ac"><div class="aci"><img src="logos/graduation.svg" alt="" width="22" height="22" loading="lazy"/></div><div><div class="acl">Degree</div><div class="acv">BS Information Technology</div></div></div>
+      <div class="ac"><div class="aci"><img src="logos/flutter.svg" alt="" width="22" height="22" loading="lazy"/></div><div><div class="acl">Primary Specialty</div><div class="acv">Flutter Mobile Development</div></div></div>
+      <div class="ac"><div class="aci"><img src="logos/wordpress.svg" alt="" width="22" height="22" loading="lazy"/></div><div><div class="acl">Also Skilled In</div><div class="acv">WordPress &amp; Web Development</div></div></div>
+      <div class="ac"><div class="aci"><img src="logos/email.svg" alt="" width="22" height="22" loading="lazy"/></div><div><div class="acl">Email</div><div class="acv">aleezaibad7@gmail.com</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="tag">Tech Stack</div>
+  <h2 class="ttl rv">Skills &amp; <span>Technologies</span></h2>
+  <div class="swrap">
+    <div class="sbox rv"><div class="sbh"><img src="logos/mobile.svg" alt="" width="18" height="18" loading="lazy"/> Mobile Development</div><div class="chips"><span class="chip">Flutter</span><span class="chip">Dart</span><span class="chip">Provider</span><span class="chip">MVVM</span><span class="chip">Firebase Auth</span><span class="chip">Firestore</span><span class="chip">FCM</span><span class="chip">Firebase Storage</span></div></div>
+    <div class="sbox rv d1"><div class="sbh"><img src="logos/web.svg" alt="" width="18" height="18" loading="lazy"/> Web Development</div><div class="chips"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">JavaScript</span><span class="chip">WordPress</span><span class="chip">Theme Dev</span><span class="chip">Plugin Config</span></div></div>
+    <div class="sbox rv d2"><div class="sbh"><img src="logos/tools.svg" alt="" width="18" height="18" loading="lazy"/> Tools &amp; APIs</div><div class="chips"><span class="chip">Git &amp; GitHub</span><span class="chip">Android Studio</span><span class="chip">Gemini AI API</span><span class="chip">Supabase</span><span class="chip">VS Code</span></div></div>
+    <div class="sbox rv"><div class="sbh"><img src="logos/code.svg" alt="" width="18" height="18" loading="lazy"/> Languages</div><div class="chips"><span class="chip">Dart</span><span class="chip">JavaScript</span><span class="chip">C</span><span class="chip">C++</span></div></div>
+    <div class="sbox rv d1"><div class="sbh"><img src="logos/team.svg" alt="" width="18" height="18" loading="lazy"/> Soft Skills</div><div class="chips"><span class="chip">Communication</span><span class="chip">Multitasking</span><span class="chip">Time Management</span><span class="chip">Documentation</span><span class="chip">Team Work</span></div></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="tag">My Work</div>
+  <h2 class="ttl rv">Featured <span>Projects</span></h2>
+  <div class="pfilters" role="tablist" aria-label="Filter projects">
+    <button type="button" class="pfilter on" data-filter="all" role="tab" aria-selected="true">All</button>
+    <button type="button" class="pfilter" data-filter="flutter" role="tab" aria-selected="false">Flutter Apps</button>
+    <button type="button" class="pfilter" data-filter="wordpress" role="tab" aria-selected="false">WordPress</button>
+    <button type="button" class="pfilter" data-filter="featured" role="tab" aria-selected="false">Featured</button>
+  </div>
+  <div class="pwrap">
+    <article class="pc rv" data-project data-category="flutter featured" tabindex="0" role="button" aria-label="View RateBridge project details"
+      data-name="RateBridge — Construction Material Rate Comparison App"
+      data-org="⭐ FYP · University of Punjab" data-year="2025 — 2026" data-badge="Featured"
+      data-desc="Production-grade Android app built for Usman Associates, a real construction business in Pakistan. Features multi-role access for Field Users, Suppliers &amp; Admins; city-based price comparison; Google Gemini AI; FCM notifications; supplier quality badges; and full MVVM/Provider architecture."
+      data-tags="Flutter,Dart,Firebase,Gemini AI,Firestore,Provider/MVVM,FCM,Real Client"
+      data-github="https://github.com/alizehibad7-droid/RateBridge_FU_App"
+      data-images="screenshots/Ratebridge/02-role-selection.png|screenshots/Ratebridge/01-login.png|screenshots/Ratebridge/03-marketplace-home.png|screenshots/Ratebridge/06-company-dashboard.png|screenshots/Ratebridge/07-supplier-hub.png|screenshots/Ratebridge/04-supplier-dashboard.png|screenshots/Ratebridge/05-companies-partnerships.png|screenshots/Ratebridge/08-ai-assistant.png|screenshots/Ratebridge/09-profile.png">
+      <div class="pimg"><img class="pcover" src="screenshots/showcases/ratebridge.png" alt="RateBridge showcase" loading="lazy"/></div>
+      <div class="pbody pbody-compact">
+        <div class="pmeta"><span class="porg">⭐ FYP · University of Punjab</span><span class="pdot">•</span><span class="pyr">2025 — 2026</span><span class="pbdg">Featured</span></div>
+        <div class="pname">RateBridge — Construction Material Rate Comparison App</div>
+        <p class="pdesc"></p><div class="ptags"></div><div class="plinks"><a class="plnk" href="https://github.com/alizehibad7-droid/RateBridge_FU_App" target="_blank" rel="noopener">GitHub</a></div>
+      </div>
+    </article>
+    <article class="pc rv" data-project data-category="flutter" tabindex="0" role="button" aria-label="View Spark project details"
+      data-name="Spark — High Performance Student Portal" data-org="Bano Qabil" data-year="2025—2026" data-badge=""
+      data-desc="Final project of the Bano Qabil Flutter program. A full-featured student management portal with authentication, dashboards, and performance tracking built in Flutter."
+      data-tags="Flutter,Dart,Firebase,Final Project" data-github="https://github.com/alizehibad7-droid"
+      data-images="screenshots/bq_spark/role_selection_screen.jpeg|screenshots/bq_spark/AI%20screen%20of%20student.jpeg|screenshots/bq_spark/admin%20dashboard.jpeg|screenshots/bq_spark/admin%20student%20screen.jpeg|screenshots/bq_spark/admin%20task%20screen.jpeg|screenshots/bq_spark/admin%20resources%20screen.jpeg|screenshots/bq_spark/admin%20settings%20screen.jpeg">
+      <div class="pimg"><img class="pcover" src="screenshots/showcases/spark.png" alt="Spark showcase" loading="lazy"/></div>
+      <div class="pbody pbody-compact">
+        <div class="pmeta"><span class="porg">Bano Qabil</span><span class="pdot">•</span><span class="pyr">2025—2026</span></div>
+        <div class="pname">Spark — High Performance Student Portal</div>
+        <p class="pdesc"></p><div class="ptags"></div><div class="plinks"><a class="plnk" href="https://github.com/alizehibad7-droid" target="_blank" rel="noopener">GitHub</a></div>
+      </div>
+    </article>
+    <article class="pc rv" data-project data-category="flutter" tabindex="0" role="button" aria-label="View Expense Tracker project details"
+      data-name="Personal Expense Tracker App" data-org="Bano Qabil" data-year="2025" data-badge=""
+      data-desc="Flutter app to track daily expenses with categories, visual charts, and a clean summary dashboard to help users manage budgets and visualize spending patterns."
+      data-tags="Flutter,Dart,Charts,State Management" data-github="https://github.com/alizehibad7-droid"
+      data-images="screenshots/Expense_tracker%20app/expense%20dashboard.png|screenshots/Expense_tracker%20app/add%20expense.png|screenshots/Expense_tracker%20app/graph.png|screenshots/Expense_tracker%20app/pie%20chart.png|screenshots/Expense_tracker%20app/summary%20screen.png|screenshots/Expense_tracker%20app/add%20new%20expense%20category.png">
+      <div class="pimg"><img class="pcover" src="screenshots/showcases/expense.png" alt="Expense Tracker showcase" loading="lazy"/></div>
+      <div class="pbody pbody-compact">
+        <div class="pmeta"><span class="porg">Bano Qabil</span><span class="pdot">•</span><span class="pyr">2025</span></div>
+        <div class="pname">Personal Expense Tracker App</div>
+        <p class="pdesc"></p><div class="ptags"></div><div class="plinks"><a class="plnk" href="https://github.com/alizehibad7-droid" target="_blank" rel="noopener">GitHub</a></div>
+      </div>
+    </article>
+    <article class="pc rv" data-project data-category="flutter" tabindex="0" role="button" aria-label="View Wanderly project details"
+      data-name="Smart Travel Planner — Wanderly" data-org="Bano Qabil" data-year="2025" data-badge=""
+      data-desc="Wanderly helps travelers plan trips together with simple, intuitive navigation and seamless performance — from real-time weather updates to group chat and expense tracking, all in one place."
+      data-tags="Flutter,Dart,Firebase,Group Chat,Weather API" data-github="https://github.com/alizehibad7-droid"
+      data-images="screenshots/wanderly/01-trips-itinerary.png|screenshots/wanderly/02-expenses-explore-weather.png|screenshots/wanderly/03-chat-profile.png">
+      <div class="pimg"><img class="pcover" src="screenshots/showcases/wanderly.png" alt="Wanderly showcase" loading="lazy"/></div>
+      <div class="pbody pbody-compact">
+        <div class="pmeta"><span class="porg">Bano Qabil</span><span class="pdot">•</span><span class="pyr">2025</span></div>
+        <div class="pname">Smart Travel Planner — Wanderly</div>
+        <p class="pdesc"></p><div class="ptags"></div><div class="plinks"><a class="plnk" href="https://github.com/alizehibad7-droid" target="_blank" rel="noopener">GitHub</a></div>
+      </div>
+    </article>
+    <article class="pc rv" data-project data-category="flutter" tabindex="0" role="button" aria-label="View Fitness project details"
+      data-name="Fitness &amp; Workout Planner" data-org="Bano Qabil" data-year="2025" data-badge=""
+      data-desc="Flutter app for planning and tracking workout routines. Includes an exercise library, daily schedule builder, and progress tracking with a clean sports-inspired UI."
+      data-tags="Flutter,Dart,UI/UX,Health Tech" data-github="https://github.com/alizehibad7-droid"
+      data-images="screenshots/fitness%20app/Dashboard_fitness.jpeg|screenshots/fitness%20app/workout_library_screen.jpeg|screenshots/fitness%20app/performance_analysis.jpeg|screenshots/fitness%20app/AI_screen.jpeg">
+      <div class="pimg"><img class="pcover" src="screenshots/showcases/fitness.png" alt="Fitness showcase" loading="lazy"/></div>
+      <div class="pbody pbody-compact">
+        <div class="pmeta"><span class="porg">Bano Qabil</span><span class="pdot">•</span><span class="pyr">2025</span></div>
+        <div class="pname">Fitness &amp; Workout Planner</div>
+        <p class="pdesc"></p><div class="ptags"></div><div class="plinks"><a class="plnk" href="https://github.com/alizehibad7-droid" target="_blank" rel="noopener">GitHub</a></div>
+      </div>
+    </article>
+    <article class="pc rv" data-project data-category="flutter" tabindex="0" role="button" aria-label="View Zikar project details"
+      data-name="Zikar &amp; Tasbeeh Tracker App" data-org="Bano Qabil" data-year="2025" data-badge=""
+      data-desc="Flutter app for counting Islamic Zikar with circular progress indicator, vibration on target completion, color transitions, and data persistence via SharedPreferences."
+      data-tags="Flutter,Dart,SharedPreferences,Vibration" data-github="https://github.com/alizehibad7-droid"
+      data-images="screenshots/zikar%20and%20tasbeeh/Dashboard_tasbeeh.png|screenshots/zikar%20and%20tasbeeh/zikar%20counter%20screen.png|screenshots/zikar%20and%20tasbeeh/add%20new%20zikar.png|screenshots/zikar%20and%20tasbeeh/zikar%20completed.png">
+      <div class="pimg"><img class="pcover" src="screenshots/showcases/zikar.png" alt="Zikar showcase" loading="lazy"/></div>
+      <div class="pbody pbody-compact">
+        <div class="pmeta"><span class="porg">Bano Qabil</span><span class="pdot">•</span><span class="pyr">2025</span></div>
+        <div class="pname">Zikar &amp; Tasbeeh Tracker App</div>
+        <p class="pdesc"></p><div class="ptags"></div><div class="plinks"><a class="plnk" href="https://github.com/alizehibad7-droid" target="_blank" rel="noopener">GitHub</a></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+
+<section id="experience">
+  <div class="tag">Work History</div>
+  <h2 class="ttl rv">Professional <span>Experience</span></h2>
+  <div class="tline">
+    <div class="ti rv"><div class="tdot"></div>
+      <div class="tcard"><div class="thead"><h3 class="trole">WordPress Frontend Developer Intern</h3><span class="tbdg">2025 · 3.5 Months</span></div>
+        <div class="tco">NEXCRAFTSTUDIO</div>
+        <ul class="tpts"><li>Developed and deployed multiple WordPress websites for real clients</li><li>Customized themes and plugins to match client branding and requirements</li><li>Ensured responsiveness, performance, and cross-browser compatibility</li></ul>
+      </div>
+    </div>
+    <div class="ti rv d1"><div class="tdot"></div>
+      <div class="tcard"><div class="thead"><h3 class="trole">Flutter App Developer — Final Year Project</h3><span class="tbdg">2025 — 2026</span></div>
+        <div class="tco">University of Punjab, BS IT · Real Client: Usman Associates</div>
+        <ul class="tpts"><li>Built RateBridge — a full-stack Flutter app from design to deployment for a real business</li><li>Implemented multi-role access: Field Users, Suppliers &amp; Admins</li><li>Integrated Google Gemini AI API, Firebase (Auth, Firestore, Storage, FCM)</li><li>Designed MVVM/Provider architecture and full technical documentation (SRS, SDS, Implementation Report)</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="tag">Academic Background</div>
+  <h2 class="ttl rv">Education</h2>
+  <div class="egrid">
+    <div class="ecard rv"><div class="eyr">2021 — Present</div><div class="edeg">BS Information Technology</div><div class="einst">University of Punjab, Lahore, Pakistan</div><span class="egrd">CGPA: 3.64 / 4.0</span></div>
+    <div class="ecard rv d1"><div class="eyr">2019 — 2021</div><div class="edeg">ICS — Intermediate in Computer Science</div><div class="einst">FBISE, Islamabad</div><span class="egrd">Grade: A+</span></div>
+    <div class="ecard rv d2"><div class="eyr">2017 — 2019</div><div class="edeg">Matric — Science</div><div class="einst">FBISE, Islamabad</div><span class="egrd">Grade: A+</span></div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="tag">Credentials</div>
+  <h2 class="ttl rv">Certifications</h2>
+  <div class="cgrid">
+    <div class="ccert-row rv">
+      <a class="ccert-preview" href="certificates/nexcraftstudio-internship.png" target="_blank" rel="noopener">
+        <img src="certificates/nexcraftstudio-internship.png" alt="Certificate of Internship Completion — Aleeza Ibad, Website Development at NexCraftStudio"/>
+      </a>
+      <div class="ccert-meta">
+        <div class="ccert-label">Internship</div>
+        <div class="cnm">WordPress / Website Development</div>
+        <div class="cby">NexCraftStudio · Certificate of Completion</div>
+        <div class="cdt">ID: WG2510</div>
+        <span class="ccert-hint">Open full certificate →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="cbox rv">
+    <div class="tag" style="justify-content:center">Get In Touch</div>
+    <h2 class="ttl" style="margin-bottom:0.6rem">Let's <span>Connect</span></h2>
+    <p>Open to internships, freelance projects, and full-time opportunities. Feel free to reach out!</p>
+    <div class="clnks">
+      <a class="cl pr" href="mailto:aleezaibad7@gmail.com"><svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.907 1.528-1.148C21.69 2.28 24 3.434 24 5.457z"/></svg>aleezaibad7@gmail.com</a>
+      <a class="cl" href="https://github.com/alizehibad7-droid" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>GitHub</a>
+      <a class="cl" href="https://www.linkedin.com/in/aleeza-ibad-869849327" target="_blank"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
+      <a class="cl" href="tel:03434659381"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>0343-4659381</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- PROJECT MODAL -->
+<div id="projModal" class="pmod" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pmodTitle">
+  <div class="pmod-backdrop" data-pmod-close></div>
+  <div class="pmod-panel">
+    <button type="button" class="pmod-close" data-pmod-close aria-label="Close project details">&times;</button>
+    <div class="pmod-scroll">
+      <div class="pmod-head">
+        <div class="pmeta" id="pmodMeta"></div>
+        <div class="pname" id="pmodTitle"></div>
+        <div class="ptags" id="pmodHeadTags"></div>
+      </div>
+      <div class="pmod-gallery">
+        <div class="pmod-main"><img id="pmodMainImg" src="" alt=""/></div>
+        <div class="pmod-thumbs" id="pmodThumbs"></div>
+      </div>
+      <div class="pmod-body">
+        <p class="pdesc" id="pmodDesc"></p>
+        <div class="ptags" id="pmodBodyTags"></div>
+        <div class="plinks" id="pmodLinks"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Designed &amp; Built by <strong>Aleeza Ibad</strong> &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; Rawalpindi, Pakistan</footer>
+
+<script>
+  /* SMOOTH SCROLL — nav fix */
+  function goTo(id){
+    const el=document.getElementById(id);
+    if(!el)return;
+    const top=el.getBoundingClientRect().top+window.pageYOffset-document.getElementById('nav').offsetHeight-10;
+    window.scrollTo({top,behavior:'smooth'});
+  }
+  function mGoTo(id){closeMob();setTimeout(()=>goTo(id),260);}
+
+  /* HAMBURGER */
+  const ham=document.getElementById('ham'),mn=document.getElementById('mn');
+  ham.addEventListener('click',()=>{ham.classList.toggle('open');mn.classList.toggle('open');});
+  function closeMob(){ham.classList.remove('open');mn.classList.remove('open');}
+
+  /* NAV SCROLL EFFECT */
+  window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('sc',window.scrollY>40));
+
+  /* REVEAL ANIMATION */
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}});
+  },{threshold:0.1});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  /* HERO REVEAL ON LOAD */
+  window.addEventListener('load',()=>{
+    document.querySelectorAll('#hero .rv').forEach((el,i)=>setTimeout(()=>el.classList.add('on'),150+i*120));
+  });
+
+
+  /* PROJECT MODAL */
+  const projModal=document.getElementById('projModal');
+  const pmodMainImg=document.getElementById('pmodMainImg');
+  const pmodThumbs=document.getElementById('pmodThumbs');
+  const pmodMeta=document.getElementById('pmodMeta');
+  const pmodTitle=document.getElementById('pmodTitle');
+  const pmodHeadTags=document.getElementById('pmodHeadTags');
+  const pmodDesc=document.getElementById('pmodDesc');
+  const pmodBodyTags=document.getElementById('pmodBodyTags');
+  const pmodLinks=document.getElementById('pmodLinks');
+  let pmodImages=[];
+  let pmodIdx=0;
+
+  function escHtml(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function setPmodMain(i){
+    if(!pmodImages.length)return;
+    pmodIdx=(i+pmodImages.length)%pmodImages.length;
+    const src=pmodImages[pmodIdx];
+    pmodMainImg.src=src;
+    pmodMainImg.alt=pmodTitle.textContent+' screenshot '+(pmodIdx+1);
+    pmodThumbs.querySelectorAll('.pmod-thumb').forEach((btn,n)=>btn.classList.toggle('on',n===pmodIdx));
+    const active=pmodThumbs.children[pmodIdx];
+    if(active)active.scrollIntoView({inline:'nearest',block:'nearest',behavior:'smooth'});
+  }
+
+  function openProjectModal(card){
+    const name=card.dataset.name||'';
+    const org=card.dataset.org||'';
+    const year=card.dataset.year||'';
+    const badge=card.dataset.badge||'';
+    const desc=card.dataset.desc||'';
+    const tags=(card.dataset.tags||'').split(',').map(t=>t.trim()).filter(Boolean);
+    const github=card.dataset.github||'';
+    pmodImages=(card.dataset.images||'').split('|').map(s=>s.trim()).filter(Boolean);
+
+    let metaHtml='<span class="porg">'+escHtml(org)+'</span>';
+    if(year)metaHtml+='<span class="pdot">•</span><span class="pyr">'+escHtml(year)+'</span>';
+    if(badge)metaHtml+='<span class="pbdg">'+escHtml(badge)+'</span>';
+    pmodMeta.innerHTML=metaHtml;
+    pmodTitle.textContent=name;
+    pmodDesc.innerHTML=desc;
+
+    const tagHtml=tags.map(t=>'<span class="ptag">'+escHtml(t)+'</span>').join('');
+    pmodHeadTags.innerHTML=tagHtml;
+    pmodBodyTags.innerHTML=tagHtml;
+
+    pmodThumbs.innerHTML='';
+    pmodImages.forEach((src,i)=>{
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='pmod-thumb'+(i?'':' on');
+      btn.setAttribute('aria-label','View screenshot '+(i+1));
+      btn.innerHTML='<img src="'+src+'" alt="" loading="lazy"/>';
+      btn.addEventListener('click',e=>{e.stopPropagation();setPmodMain(i);});
+      pmodThumbs.appendChild(btn);
+    });
+
+    if(pmodImages.length){
+      setPmodMain(0);
+      pmodMainImg.style.display='';
+    }else{
+      pmodMainImg.removeAttribute('src');
+      pmodMainImg.style.display='none';
+    }
+
+    pmodLinks.innerHTML=github
+      ?'<a class="plnk" href="'+escHtml(github)+'" target="_blank" rel="noopener">View on GitHub</a>'
+      :'';
+
+    projModal.classList.add('open');
+    projModal.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-open');
+    projModal.querySelector('.pmod-close').focus();
+  }
+
+  function closeProjectModal(){
+    projModal.classList.remove('open');
+    projModal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-open');
+  }
+
+  document.querySelectorAll('[data-project]').forEach(card=>{
+    card.addEventListener('click',e=>{
+      if(e.target.closest('a'))return;
+      openProjectModal(card);
+    });
+    card.addEventListener('keydown',e=>{
+      if(e.target.closest('a'))return;
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();
+        openProjectModal(card);
+      }
+    });
+  });
+
+  projModal.querySelectorAll('[data-pmod-close]').forEach(el=>{
+    el.addEventListener('click',closeProjectModal);
+  });
+  projModal.querySelector('.pmod-panel').addEventListener('click',e=>e.stopPropagation());
+  pmodLinks.addEventListener('click',e=>e.stopPropagation());
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'&&projModal.classList.contains('open'))closeProjectModal();
+  });
+
+
+  /* PROJECT FILTERS */
+  document.querySelectorAll('.pfilter').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const filter=btn.dataset.filter||'all';
+      document.querySelectorAll('.pfilter').forEach(b=>{
+        const on=b===btn;
+        b.classList.toggle('on',on);
+        b.setAttribute('aria-selected',on?'true':'false');
+      });
+      document.querySelectorAll('.pwrap [data-project]').forEach(card=>{
+        const cats=(card.dataset.category||'').trim().split(/\s+/).filter(Boolean);
+        const show=filter==='all'||cats.includes(filter);
+        card.classList.toggle('is-hidden',!show);
+      });
+    });
+  });
+
+  /* CUSTOM CURSOR */
+  (function(){
+    /* only skip on true touch-primary devices (AND, not OR) */
+    if(window.matchMedia('(hover: none) and (pointer: coarse)').matches)return;
+    document.querySelectorAll('.cursor-dot,.cursor-ring,.cursor-spin').forEach(n=>n.remove());
+    const dot=document.createElement('div');
+    const ring=document.createElement('div');
+    const spin=document.createElement('div');
+    dot.className='cursor-dot';
+    ring.className='cursor-ring';
+    spin.className='cursor-spin';
+    spin.textContent='\u2736';
+    document.body.append(dot,ring,spin);
+    let x=window.innerWidth/2,y=window.innerHeight/2,rx=x,ry=y,sx=x,sy=y;
+    const move=e=>{x=e.clientX;y=e.clientY;};
+    window.addEventListener('mousemove',move,{passive:true});
+    document.addEventListener('mousemove',move,{passive:true});
+    (function tick(){
+      rx+=(x-rx)*0.22;ry+=(y-ry)*0.22;
+      sx+=(x-sx)*0.14;sy+=(y-sy)*0.14;
+      const rot=((Date.now()/11)%360);
+      dot.style.transform='translate3d('+x+'px,'+y+'px,0) translate(-50%,-50%)';
+      ring.style.transform='translate3d('+rx+'px,'+ry+'px,0) translate(-50%,-50%)';
+      spin.style.transform='translate3d('+(sx+22)+'px,'+(sy-18)+'px,0) translate(-50%,-50%) rotate('+rot+'deg)';
+      requestAnimationFrame(tick);
+    })();
+    const mark=el=>{
+      el.addEventListener('mouseenter',()=>ring.classList.add('on-link'));
+      el.addEventListener('mouseleave',()=>ring.classList.remove('on-link'));
+    };
+    document.querySelectorAll('a,button,.btn,.pc,.pfilter,.sic,.cl,.plnk,.chip,.theme-toggle,.pmod-close,.pmod-thumb,[data-project]').forEach(mark);
+  })();
+
+  /* THEME TOGGLE */
+  (function(){
+    const root=document.documentElement;
+    const btn=document.getElementById('themeToggle');
+    const saved=localStorage.getItem('theme')||'dark';
+    root.setAttribute('data-theme',saved);
+    btn&&btn.addEventListener('click',()=>{
+      const next=root.getAttribute('data-theme')==='light'?'dark':'light';
+      root.setAttribute('data-theme',next);
+      localStorage.setItem('theme',next);
+    });
+  })();
+
+  /* IMAGE FALLBACK */
+  const fallbackLogo='logos/default.svg';
+  document.querySelectorAll('.aci img,.cico img,.sbh img,.pimg img,.pcover,.pmod-thumb img').forEach(img=>{
+    img.addEventListener('error',function onErr(){
+      if(this.dataset.fallback)return;
+      this.dataset.fallback='1';
+      if(this.closest('.aci,.cico,.sbh'))this.src=fallbackLogo;
+    },{once:true});
+  });
+</script>
+</body>
+</html>
